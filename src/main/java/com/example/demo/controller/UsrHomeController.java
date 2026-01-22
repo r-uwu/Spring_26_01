@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Controller
+
 public class UsrHomeController {
 	
 	int lastArticleId;
@@ -27,10 +28,17 @@ public class UsrHomeController {
 		lastArticleId = 0;
 	}
 	
-	
-	@RequestMapping("/usr/home/doAdd")
-	@ResponseBody
-	public Article doAdd(@RequestParam String title,@RequestParam String body) {
+	// 서비스메서드
+	private void makeTestData() {
+		for (int i = 1; i <= 10; i++) {
+			String title = "제목 " + i;
+			String body = "내용 " + i;
+
+			writeArticle(title, body);
+		}
+	}
+
+	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
 		
 		lastArticleId++;
 		int id = lastArticleId;
@@ -46,17 +54,72 @@ public class UsrHomeController {
 	}
 	
 
-	@RequestMapping("/usr/home/getArticle")
-	@ResponseBody
-	public Article getArticle() {
-		
+	private Article getArticleById(int id) {
+		for (Article article : articles) {
+			if (article.getId() == id) {
+				return article;
+			}
+		}
 		return null;
-	}	
+	}
+	
+
+	// 액션메서드
+	@RequestMapping("/usr/article/getArticle")
+	@ResponseBody
+	public Object getArticle(int id) {
+
+		Article article = getArticleById(id);
+
+		if (article == null) {
+			return id + "번 글은 없음";
+		}
+
+		return article;
+	}
+
+	@RequestMapping("/usr/article/doModify")
+	@ResponseBody
+	public Object doModify(int id, String title, String body) {
+
+		Article article = getArticleById(id);
+
+		if (article == null) {
+			return id + "번 글은 없음";
+		}
+
+		article.setTitle(title);
+		article.setBody(body);
+
+//		return id + "번 글이 수정됨 " + article;
+		return article;
+	}
+
+	@RequestMapping("/usr/article/doDelete")
+	@ResponseBody
+	public String doDelete(int id) {
+
+		Article article = getArticleById(id);
+
+		if (article == null) {
+			return id + "번 글은 없음";
+		}
+
+		articles.remove(article);
+
+		return id + "번 글이 삭제되었습니다";
+	}
+
+	@RequestMapping("/usr/article/doAdd")
+	@ResponseBody
+	public Article doAdd(String title, String body) {
+		Article article = writeArticle(title, body);
+		return article;
+	}
 }
 
 
 @Data
-@AllArgsConstructor
 @Getter
 @Setter
 class Article {
