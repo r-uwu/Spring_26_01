@@ -1,5 +1,7 @@
 package com.example.demo.vo;
 
+import java.time.LocalDateTime;
+
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,15 +11,15 @@ import lombok.Setter;
 @Setter
 public class Article {
 	
-	private int id;
-	private String title;
-	private String body;
-	
-	public Article(int id, String title, String body) {
-		
-		this.id = id;
+	public Article(String title, String body) {
 		this.title = title;
 		this.body = body;
 	}
+	
+	private int id;
+	LocalDateTime regDate;
+	LocalDateTime updateDate;
+	private String title;
+	private String body;
 
 }

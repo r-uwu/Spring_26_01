@@ -1,56 +1,35 @@
 package com.example.demo.repository;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.example.demo.vo.Article;
 
-public class ArticleRepository {
+@Mapper
+public interface ArticleRepository {
 
+    //INSERT INTO article SET regDate=NOW(), updateDate=NOW(), title = ?, body = ?;
+	@Insert("INSERT INTO article SET regDate=NOW(), updateDate=NOW(), title = ?, body = ?;")
+	public Article writeArticle(String title, String body);
+	
+	//DELETE FROM article WHERE id = ?;
+	@Delete("DELETE FROM article WHERE id = ?;")
+	public void deleteArticle(int id);
 
-	private int lastArticleId;
-	public List<Article> articles;
+	//UPDATE article updateDate = NOW(), title = ?, body = ?;
+	@Update("UPDATE article updateDate = NOW(), title = ?, body = ?;")
+	public void modifyArticle(int id, String title, String body);
+	
+	//SELECT * FROM article WHERE id = ?;
+	@Select("SELECT * FROM article WHERE id = ?;")
+	public Article getArticleById(int id);
 
-	public ArticleRepository() {
-		articles = new ArrayList<>();
-		lastArticleId = 0;
-	}
-
-	public Article writeArticle(String title, String body) {
-		int id = lastArticleId + 1;
-
-		Article article = new Article(id, title, body);
-		articles.add(article);
-
-		lastArticleId++;
-
-		return article;
-	}
-
-	public void deleteArticle(int id) {
-		Article article = getArticleById(id);
-		articles.remove(article);
-
-	}
-
-	public void modifyArticle(int id, String title, String body) {
-		Article article = getArticleById(id);
-		article.setTitle(title);
-		article.setBody(body);
-
-	}
-
-	public Article getArticleById(int id) {
-		for (Article article : articles) {
-			if (article.getId() == id) {
-				return article;
-			}
-		}
-		return null;
-	}
-
-	public List<Article> getArticles() {
-		return articles;
-	}
-
+	//SELECT * FROM article ORDER BY id DESC;
+	@Select("SELECT * FROM article ORDER BY id DESC;")
+	public List<Article> getArticles();
 }

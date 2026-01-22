@@ -34,8 +34,8 @@ public class ArticleService {
 	}
 
 	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
-		
-		return articleRepository.writeArticle(title, body);
+		articleRepository.writeArticle(title, body);
+		return new Article(title, body);
 	}
 	
 	public void modifyArticle(int id, String title, String body) {
