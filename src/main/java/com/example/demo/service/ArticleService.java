@@ -3,20 +3,23 @@ package com.example.demo.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.repository.ArticleRepository;
 import com.example.demo.vo.Article;
 
 public class ArticleService {
-	private int lastArticleId;
-	public List<Article> articles;
+
+	private ArticleRepository articleRepository;
 	
-	public ArticleService() {
-		articles = new ArrayList<>();
-		lastArticleId = 0;
+	@Autowired
+	public ArticleService(ArticleRepository articleRepository) {
 		
+		this.articleRepository = articleRepository;
+	
 		makeTestData();
 	}
 
@@ -26,44 +29,31 @@ public class ArticleService {
 			String title = "제목 " + i;
 			String body = "내용 " + i;
 
-			writeArticle(title, body);
+			articleRepository.writeArticle(title, body);
 		}
 	}
 
 	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
 		
-		lastArticleId++;
-		int id = lastArticleId;
-		Article article = new Article(id, title, body);
-		articles.add(article);
-		return article;	
+		return articleRepository.writeArticle(title, body);
 	}
 	
-	
-
-	public Article getArticleById(int id) {
-		for (Article article : articles) {
-			if (article.getId() == id) {
-				return article;
-			}
-		}
-		return null;
-	}
-	
-
 	public void modifyArticle(int id, String title, String body) {
 
-		Article article = getArticleById(id);
-		article.setTitle(title);
-		article.setBody(body);
-
-
+		articleRepository.modifyArticle(id, title, body);
 	}
 
 	public void deleteArticle(int id) {
 
-		Article article = getArticleById(id);
-		articles.remove(article);
+		articleRepository.deleteArticle(id);
+	}
+	
+	public Article getArticleById(int id) {
+		return articleRepository.getArticleById(id);
 	}
 
+	public List<Article> getArticles() {
+		return articleRepository.getArticles();
+	}
+	
 }

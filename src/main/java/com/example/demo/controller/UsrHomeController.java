@@ -5,11 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.service.ArticleService;
+import com.example.demo.vo.Article;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,48 +24,21 @@ import lombok.Setter;
 
 public class UsrHomeController {
 	
-	int lastArticleId;
-	List<Article> articles;
+
+	@Autowired
+	private ArticleService articleService;
 	
 	public UsrHomeController() {
-		articles = new ArrayList<>();
-		lastArticleId = 0;
+//		articleService = new ArticleService(); --> @Autowired로 대체 됨
 	}
 	
-	// 서비스메서드
-	private void makeTestData() {
-		for (int i = 1; i <= 10; i++) {
-			String title = "제목 " + i;
-			String body = "내용 " + i;
-
-			writeArticle(title, body);
-		}
-	}
-
-	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
-		
-		lastArticleId++;
-		int id = lastArticleId;
-		Article article = new Article(id, title, body);
-		articles.add(article);
-		return article;	
-	}
 	
 	@RequestMapping("/usr/home/list")
 	@ResponseBody
 	public List<Article> articleList(){
-		return articles;
+		return articleService.getArticles();
 	}
-	
 
-	private Article getArticleById(int id) {
-		for (Article article : articles) {
-			if (article.getId() == id) {
-				return article;
-			}
-		}
-		return null;
-	}
 	
 
 	// 액션메서드
@@ -69,7 +46,7 @@ public class UsrHomeController {
 	@ResponseBody
 	public Object getArticle(int id) {
 
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
 			return id + "번 글은 없음";
@@ -77,64 +54,38 @@ public class UsrHomeController {
 
 		return article;
 	}
-
+	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
 	public Object doModify(int id, String title, String body) {
-
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
 			return id + "번 글은 없음";
 		}
-
-		article.setTitle(title);
-		article.setBody(body);
-
-//		return id + "번 글이 수정됨 " + article;
 		return article;
 	}
-
+	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
 	public String doDelete(int id) {
 
-		Article article = getArticleById(id);
+		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
 			return id + "번 글은 없음";
 		}
 
-		articles.remove(article);
-
 		return id + "번 글이 삭제되었습니다";
 	}
+
 
 	@RequestMapping("/usr/article/doAdd")
 	@ResponseBody
 	public Article doAdd(String title, String body) {
-		Article article = writeArticle(title, body);
+		Article article = articleService.writeArticle(title, body);
 		return article;
 	}
-}
-
-
-@Data
-@Getter
-@Setter
-class Article {
-	
-	private int id;
-	private String title;
-	private String body;
-	
-	public Article(int id, String title, String body) {
-		
-		this.id = id;
-		this.title = title;
-		this.body = body;
-	}
-
 }
 
 
