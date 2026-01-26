@@ -26,6 +26,10 @@ public class Ut {
 			return Array.getLength(obj) == 0;
 		}
 
-		return false;
+		return false;	
+	}
+	
+	public static String f(String string, Object... args) {
+		return String.format(string, args);
 	}
 }

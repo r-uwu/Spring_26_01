@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.ArticleService;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,13 +24,13 @@ import lombok.Setter;
 
 @Controller
 
-public class UsrHomeController {
+public class UsrArticleController {
 	
 
 	@Autowired
 	private ArticleService articleService;
 	
-	public UsrHomeController() {
+	public UsrArticleController() {
 //		articleService = new ArticleService(); --> @Autowired로 대체 됨
 	}
 	
@@ -44,15 +46,15 @@ public class UsrHomeController {
 	// 액션메서드
 	@RequestMapping("/usr/article/getArticle")
 	@ResponseBody
-	public Object getArticle(int id) {
+	public ResultData getArticle(int id) {
 
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 글은 없음";
+			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
 
-		return article;
+		return ResultData.from("S-1", Ut.f("%d번 게시글입니다.", id), article);
 	}
 	
 	@RequestMapping("/usr/article/doModify")
