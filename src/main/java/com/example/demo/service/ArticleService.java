@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.repository.ArticleRepository;
+import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.ResultData;
 
 @Service
 public class ArticleService {
@@ -26,19 +28,27 @@ public class ArticleService {
 	}
 
 	// 서비스메서드
-	private void makeTestData() {
-		for (int i = 1; i <= 10; i++) {
-			String title = "제목 " + i;
-			String body = "내용 " + i;
+//	private void makeTestData() {
+//		for (int i = 1; i <= 10; i++) {
+//			String title = "제목 " + i;
+//			String body = "내용 " + i;
+//
+//			articleRepository.writeArticle(title, body);
+//		}
+//	}
+	
+	public ResultData writeArticle(int loginedMemberId, String title, String body) {
 
-			articleRepository.writeArticle(title, body);
-		}
-	}
+		articleRepository.writeArticle(loginedMemberId,title, body);
+		
+		int id = articleRepository.getLastInsertId();
 
-	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
-		articleRepository.writeArticle(title, body);
-		return new Article(title, body);
+		return ResultData.from("S-1", Ut.f("%d번 게시글 작성", id), id);
 	}
+//	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
+//		articleRepository.writeArticle(title, body);
+//		return new Article(title, body);
+//	}
 	
 	public void modifyArticle(int id, String title, String body) {
 

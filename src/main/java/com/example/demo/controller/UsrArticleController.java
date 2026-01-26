@@ -17,6 +17,7 @@ import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
 import com.example.demo.vo.ResultData;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -59,38 +60,88 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public Object doModify(int id, String title, String body) {
+	public ResultData<Article> doModify(HttpSession session, int id, String title, String body) {
+		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		}
+
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인이 필요합니다");
+		}
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 글은 없음";
+			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
 		
 		articleService.modifyArticle(id, title, body);
 		article = articleService.getArticleById(id);
-		return article;
+		
+		return ResultData.from("S-1", Ut.f("%d번 게시글이 수정됨", id), article);
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public String doDelete(int id) {
+	public ResultData<Integer> doDelete(HttpSession session, int id) {
+		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		}
+
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인이 필요합니다");
+		}
 
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return id + "번 글은 없음";
+			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
 
-		return id + "번 글이 삭제되었습니다";
+		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), id);
 	}
 
 
-	@RequestMapping("/usr/article/doAdd")
+	@RequestMapping("/usr/article/doWhite")
 	@ResponseBody
-	public Article doAdd(String title, String body) {
-		Article article = articleService.writeArticle(title, body);
-		return article;
+	public ResultData<Article> doWrite(HttpSession session, String title, String body) {
+
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+		}
+
+		if (isLogined == false) {
+			return ResultData.from("F-A", "로그인이 필요합니다");
+		}
+		if (Ut.isEmptyOrNull(title)) {
+			return ResultData.from("F-1", "제목을 작성하세요");
+		}
+		if (Ut.isEmptyOrNull(body)) {
+			return ResultData.from("F-2", "내용을 작성하세요");
+		}
+
+		ResultData doWriteRd = articleService.writeArticle(loginedMemberId, title, body);
+
+		int id = (int) doWriteRd.getData1();
+
+		Article article = articleService.getArticleById(id);
+
+		return ResultData.newData(doWriteRd, article);
 	}
+	
 }
 
 
