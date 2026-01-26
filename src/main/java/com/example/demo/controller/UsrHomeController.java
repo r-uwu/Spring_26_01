@@ -63,6 +63,9 @@ public class UsrHomeController {
 		if (article == null) {
 			return id + "번 글은 없음";
 		}
+		
+		articleService.modifyArticle(id, title, body);
+		article = articleService.getArticleById(id);
 		return article;
 	}
 	

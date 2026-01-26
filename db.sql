@@ -8,11 +8,18 @@ USE Spring_26_01;
 
 
 CREATE TABLE MEMBER (
-id INT AUTO_INCREMENT PRIMARY KEY,
-userId CHAR(20) NOT NULL,
-userPw CHAR(20) NOT NULL,
-userName CHAR(20) NOT NULL,
-regDate DATETIME DEFAULT CURRENT_TIMESTAMP
+ id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ regDate DATETIME NOT NULL,
+ updateDate DATETIME NOT NULL,
+ loginId CHAR(30) NOT NULL,
+ loginPw CHAR(100) NOT NULL,
+ `authLevel` SMALLINT(2) UNSIGNED DEFAULT 3 COMMENT '권한 레벨 (3=일반,7=관리자)',
+ `name` CHAR(20) NOT NULL,
+ nickname CHAR(20) NOT NULL,
+ cellphoneNum CHAR(20) NOT NULL,
+ email CHAR(20) NOT NULL,
+ delStatus TINYINT(1) UNSIGNED NOT NULL DEFAULT 0 COMMENT '탈퇴 여부 (0=탈퇴 전, 1=탈퇴 후)',
+ delDate DATETIME COMMENT '탈퇴 날짜'
 )
 
 SHOW TABLES
@@ -108,5 +115,8 @@ UPDATE article
 SET
 writer = "작성자 없음"
 WHERE writer = "";
+
+
+
 
 
