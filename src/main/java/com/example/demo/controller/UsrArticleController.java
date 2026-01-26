@@ -24,25 +24,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Controller
-
 public class UsrArticleController {
 	
-
 	@Autowired
 	private ArticleService articleService;
-	
-	public UsrArticleController() {
-//		articleService = new ArticleService(); --> @Autowired로 대체 됨
-	}
-	
-	
-	@RequestMapping("/usr/home/list")
-	@ResponseBody
-	public List<Article> articleList(){
-		return articleService.getArticles();
-	}
-
-	
 
 	// 액션메서드
 	@RequestMapping("/usr/article/getArticle")
@@ -54,8 +39,16 @@ public class UsrArticleController {
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
+		
+		boolean isLogined = false;
+		int loginedMemberId = 0;
+		ResultData loginedMemberCanModifyRd = articleService.loginedMemberCanModify(loginedMemberId, article);
 
-		return ResultData.from("S-1", Ut.f("%d번 게시글입니다.", id), article);
+		if (loginedMemberCanModifyRd.isFail()) {
+			return ResultData.from(loginedMemberCanModifyRd.getResultCode(), loginedMemberCanModifyRd.getMsg());
+		}
+
+		return ResultData.from("S-1", Ut.f("%d번 게시글입니다.", id), "article 1개", article);
 	}
 	
 	@RequestMapping("/usr/article/doModify")
@@ -79,10 +72,17 @@ public class UsrArticleController {
 			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
 		
+		ResultData loginedMemberCanModifyRd = articleService.loginedMemberCanModify(loginedMemberId, article);
+
+		if (loginedMemberCanModifyRd.isFail()) {
+			return ResultData.from(loginedMemberCanModifyRd.getResultCode(), loginedMemberCanModifyRd.getMsg());
+		}
+
 		articleService.modifyArticle(id, title, body);
 		article = articleService.getArticleById(id);
-		
-		return ResultData.from("S-1", Ut.f("%d번 게시글이 수정됨", id), article);
+
+		return ResultData.from(loginedMemberCanModifyRd.getResultCode(), loginedMemberCanModifyRd.getMsg(),
+				"이번에 수정된 글 ", article);
 	}
 	
 	@RequestMapping("/usr/article/doDelete")
@@ -106,11 +106,22 @@ public class UsrArticleController {
 		if (article == null) {
 			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
+		
+		if (article.getMemberId() != loginedMemberId) {
+			return ResultData.from("F-A2", "권한없음");
+		}
 
-		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), id);
+		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), "이번에 삭제된 게시글의 id", id);
 	}
+	
+	@RequestMapping("/usr/article/getArticles")
+	@ResponseBody
+	public ResultData<List<Article>> getArticles() {
+		List<Article> articles = articleService.getArticles();
 
-
+		return ResultData.from("S-1", Ut.f("게시글 목록"), "article 리스트", articles);
+	}
+	
 	@RequestMapping("/usr/article/doWhite")
 	@ResponseBody
 	public ResultData<Article> doWrite(HttpSession session, String title, String body) {
@@ -139,7 +150,7 @@ public class UsrArticleController {
 
 		Article article = articleService.getArticleById(id);
 
-		return ResultData.newData(doWriteRd, article);
+		return ResultData.newData(doWriteRd, "이번에 쓰여진 글 / 새로 INSERT 된 article", article);
 	}
 	
 }

@@ -43,12 +43,17 @@ public class ArticleService {
 		
 		int id = articleRepository.getLastInsertId();
 
-		return ResultData.from("S-1", Ut.f("%d번 게시글 작성", id), id);
+		return ResultData.from("S-1", Ut.f("%d번 게시글 작성", id), "이번에 쓰여진 글의 id", id);
 	}
-//	public Article writeArticle(@RequestParam String title,@RequestParam String body) {
-//		articleRepository.writeArticle(title, body);
-//		return new Article(title, body);
-//	}
+
+	public ResultData loginedMemberCanModify(int loginedMemberId, Article article) {
+
+		if (article.getMemberId() != loginedMemberId) {
+			return ResultData.from("F-A2", Ut.f("%d번 게시글에 대한 권한 없음", article.getId()));
+		}
+
+		return ResultData.from("S-1", Ut.f("%d번 게시글을 수정", article.getId()));
+	}
 	
 	public void modifyArticle(int id, String title, String body) {
 

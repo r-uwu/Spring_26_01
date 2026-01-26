@@ -73,45 +73,51 @@ public class UsrMemberController {
 
 		session.setAttribute("loginedMemberId", member.getId());
 
-		return ResultData.from("S-1", Ut.f("%s님 환영합니다", member.getNickname()), member);
+		return ResultData.from("S-1", Ut.f("%s님 환영합니다", member.getNickname()), "이번에 로그인 한 회원", member);
 	}
 
 	@RequestMapping("/usr/member/join")
 	@ResponseBody
-	public Object doJoin(String loginId, String loginPw, String name, String nickname, String cellphoneNum,
-			String email) {
-		
+	public ResultData<Member> doJoin(HttpSession session, String loginId, String loginPw, String name, String nickname,
+			String cellphoneNum, String email) {
+
+		boolean isLogined = false;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+		}
+
+		if (isLogined) {
+			return ResultData.from("F-A", "이미 로그인중");
+		}
 		if (Ut.isEmptyOrNull(loginId)) {
-			return "loginId를 입력하세요";
+			return ResultData.from("F-1", "loginId를 입력하세요");
 		}
 		if (Ut.isEmptyOrNull(loginPw)) {
-			return "loginPw를 입력하세요";
+			return ResultData.from("F-2", "loginPw를 입력하세요");
 		}
 		if (Ut.isEmptyOrNull(name)) {
-			return "name를 입력하세요";
+			return ResultData.from("F-3", "name를 입력하세요");
 		}
 		if (Ut.isEmptyOrNull(nickname)) {
-			return "nickname를 입력하세요";
+			return ResultData.from("F-4", "nickname를 입력하세요");
 		}
 		if (Ut.isEmptyOrNull(cellphoneNum)) {
-			return "cellphoneNum를 입력하세요";
+			return ResultData.from("F-5", "cellphoneNum를 입력하세요");
 		}
 		if (Ut.isEmptyOrNull(email)) {
-			return "email를 입력하세요";
+			return ResultData.from("F-6", "email를 입력하세요");
 		}
-		
-		int id = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-		if(id == -1) {
-			return Ut.f("이미 사용중인 loginId(%s) 입니다", loginId);
-		}
-		if(id == -2) {
-			return Ut.f("이미 사용중인 name(%s)과 email(%s) 입니다", name, email);
-		}
-		
-		Member member = memberService.getMemberById(id);
+		ResultData doJoinRd = memberService.doJoin(loginId, loginPw, name, nickname, cellphoneNum, email);
 
-		return member;
+		if (doJoinRd.isFail()) {
+			return doJoinRd;
+		}
+
+		Member member = memberService.getMemberById((int) doJoinRd.getData1());
+
+		return ResultData.newData(doJoinRd, "이번에 가입한 회원 / 새로 INSERT 된 member", member);
 	}
 
 }
