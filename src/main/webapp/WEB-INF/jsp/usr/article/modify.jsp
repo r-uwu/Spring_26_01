@@ -18,15 +18,15 @@
 		
 		            <div>
 		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title" value="${article.title}" required />
+		                <input type="text" id="title" name="title" width="500px" value="${article.title}" required />
 		            </div>
 		
 		            <div>
 		                <label for="body">내용:</label>
-		                <textarea id="body" name="body" rows="10" cols="50" required>${article.body}</textarea>
+		                <textarea id="body" name="body" rows="10" cols="30" required>${article.body}</textarea>
 		            </div>
 		
-		            <button type="submit">수정 완료</button>
+		            <button type="submit" onClick="../article/list">수정 완료</button>
 		        </form>
 		    </c:if>
 		
