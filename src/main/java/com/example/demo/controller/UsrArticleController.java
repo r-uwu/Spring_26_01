@@ -31,25 +31,19 @@ public class UsrArticleController {
 	private ArticleService articleService;
 
 	// 액션메서드
-	@RequestMapping("/usr/article/getArticle")
-	@ResponseBody
-	public ResultData getArticle(int id) {
+	@RequestMapping("/usr/article/detail")
+	public String showDetail(Model model, int id) {
 
 		Article article = articleService.getArticleById(id);
 
-		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
-		}
+//		if (article == null) {
+//			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
+//		}
+		model.addAttribute("article", article);
 		
-		boolean isLogined = false;
-		int loginedMemberId = 0;
-		ResultData loginedMemberCanModifyRd = articleService.loginedMemberCanModify(loginedMemberId, article);
-
-		if (loginedMemberCanModifyRd.isFail()) {
-			return ResultData.from(loginedMemberCanModifyRd.getResultCode(), loginedMemberCanModifyRd.getMsg());
-		}
-
-		return ResultData.from("S-1", Ut.f("%d번 게시글입니다.", id), "article 1개", article);
+		//return ResultData.from("S-1", Ut.f("%d번 게시글입니다.", id), "article 1개", article);
+		return "usr/article/detail";
+	
 	}
 	
 	@RequestMapping("/usr/article/doModify")
