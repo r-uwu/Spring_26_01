@@ -46,7 +46,7 @@
 	<select id="getArticleById" parameterType="int"
 		resultType="com.example.demo.vo.Article">
 		SELECT *
-		FROM article
+		FROM article AS A
 		WHERE A.id =
 		#{id}
 	</select>

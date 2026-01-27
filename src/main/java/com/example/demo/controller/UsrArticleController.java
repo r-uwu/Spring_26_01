@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.demo.DemoApplication;
 import com.example.demo.service.ArticleService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
@@ -27,8 +28,14 @@ import lombok.Setter;
 @Controller
 public class UsrArticleController {
 	
+	private final DemoApplication demoApplication;
+	
 	@Autowired
 	private ArticleService articleService;
+	
+	UsrArticleController(DemoApplication demoApplication) {
+		this.demoApplication = demoApplication;
+	}
 
 	// 액션메서드
 	@RequestMapping("/usr/article/detail")
@@ -84,9 +91,29 @@ public class UsrArticleController {
 				"이번에 수정된 글 ", article);
 	}
 	
+	@RequestMapping("/usr/article/modify")
+	public String showModifyPage(HttpSession session, Model model, int id) {
+	    int loginedMemberId = 0;
+	    if (session.getAttribute("loginedMemberId") != null) {
+	        loginedMemberId = (int) session.getAttribute("loginedMemberId");
+	    }
+
+	    Article article = articleService.getForPrintArticle(loginedMemberId, id);
+
+	    if (article == null) {
+	        return "redirect:/usr/article/list";
+	    }
+	    if (!article.isUserCanModify()) {
+	        return "redirect:/usr/article/detail?id=" + id;
+	    }
+
+	    model.addAttribute("article", article);
+	    return "usr/article/modify";
+	}
+	
 	@RequestMapping("/usr/article/doDelete")
 	@ResponseBody
-	public ResultData<Integer> doDelete(HttpSession session, int id) {
+	public String doDelete(HttpSession session, int id) {
 		
 		boolean isLogined = false;
 		int loginedMemberId = 0;
@@ -97,20 +124,30 @@ public class UsrArticleController {
 		}
 
 		if (isLogined == false) {
-			return ResultData.from("F-A", "로그인이 필요합니다");
+			return Ut.jsReplace("F-A", "로그인이 필요합니다","../member/login");
 		}
 
 		Article article = articleService.getArticleById(id);
 
 		if (article == null) {
-			return ResultData.from("F-1", Ut.f("%d번 게시글은 없음", id));
+			return Ut.jsHistoryBack("F-1", Ut.f("%d번 게시글은 없음", id));
 		}
 		
-		if (article.getMemberId() != loginedMemberId) {
-			return ResultData.from("F-A2", "권한없음");
+		ResultData userCanDeleteRd = articleService.userCanModify(loginedMemberId, article);
+		
+		if (userCanDeleteRd.isFail()) {
+			return Ut.jsHistoryBack(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg());
 		}
 
-		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), "이번에 삭제된 게시글의 id", id);
+		if (userCanDeleteRd.isSuccess()) {
+			articleService.deleteArticle(id);
+		}
+		
+//		if (article.getMemberId() != loginedMemberId) {
+//			return ResultData.from("F-A2", "권한없음");
+//		}
+		return Ut.jsReplace(userCanDeleteRd.getResultCode(), userCanDeleteRd.getMsg(), "../article/list");
+		//return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), "이번에 삭제된 게시글의 id", id);
 	}
 	
 //	@RequestMapping("/usr/article/getArticles")
