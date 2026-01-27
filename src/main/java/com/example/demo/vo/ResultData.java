@@ -21,7 +21,6 @@ public class ResultData<DT> {
 		rd.ResultCode = ResultCode;
 		rd.msg = msg;
 		rd.data1 = data1;
-		rd.data1Name = data1Name;
 
 		return rd;
 	}
@@ -33,8 +32,10 @@ public class ResultData<DT> {
 	public boolean isFail() {
 		return !isSuccess();
 	}
-
+	
 	public static <DT> ResultData<DT> newData(ResultData rd, String dataName, DT newData) {
 		return from(rd.getResultCode(), rd.getMsg(), dataName, newData);
+		
+		
 	}
 }

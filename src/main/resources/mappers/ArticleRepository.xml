@@ -14,6 +14,11 @@
 		body = #{body}
 	</insert>
 
+	<select id="getLastInsertId" parameterType="int">
+		SELECT
+		LAST_INSERT_ID();
+	</select>
+
 	<delete id="deleteArticle" parameterType="int">
 		DELETE FROM article
 		WHERE id = #{id}
@@ -21,10 +26,6 @@
 
 	<update id="modifyArticle" parameterType="map">
 		UPDATE article
-		SET
-		updateDate = NOW(),
-		title = #{title},
-		body = #{body}
 		<set>
 			<if test="title != null and title != ''">title = #{title},</if>
 			<if test="body != null and body != ''">`body` = #{body},</if>
@@ -44,5 +45,5 @@
 		SELECT * FROM article
 		ORDER BY id DESC
 	</select>
-</mapper>
 
+</mapper>

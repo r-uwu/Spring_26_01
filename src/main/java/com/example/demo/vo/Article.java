@@ -1,16 +1,16 @@
 package com.example.demo.vo;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
+@Builder
 public class Article {
 	
 	public Article(String title, String body) {
@@ -19,8 +19,8 @@ public class Article {
 	}
 	
 	private int id;
-	private LocalDateTime regDate;
-	private LocalDateTime updateDate;
+	private String regDate;
+	private String updateDate;
 	private int memberId;
 	private String title;
 	private String body;

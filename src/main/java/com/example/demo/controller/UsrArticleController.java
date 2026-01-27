@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,12 +115,20 @@ public class UsrArticleController {
 		return ResultData.from("S-1", Ut.f("%d번 게시글이 삭제됨", id), "이번에 삭제된 게시글의 id", id);
 	}
 	
-	@RequestMapping("/usr/article/getArticles")
-	@ResponseBody
-	public ResultData<List<Article>> getArticles() {
+//	@RequestMapping("/usr/article/getArticles")
+//	@ResponseBody
+//	public ResultData<List<Article>> getArticles() {
+//		List<Article> articles = articleService.getArticles();
+//
+//		return ResultData.from("S-1", Ut.f("게시글 목록"), "article 리스트", articles);
+//	}
+	
+	@RequestMapping("/usr/article/list")
+	public String showList(Model model) {
 		List<Article> articles = articleService.getArticles();
+		model.addAttribute("articles", articles);
 
-		return ResultData.from("S-1", Ut.f("게시글 목록"), "article 리스트", articles);
+		return "/usr/article/list";
 	}
 	
 	@RequestMapping("/usr/article/doWhite")
