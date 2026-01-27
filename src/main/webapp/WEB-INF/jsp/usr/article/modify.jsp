@@ -15,18 +15,27 @@
 		        <form action="../article/doModify" method="post">
 		            <!-- 수정할 게시글 id 숨김 -->
 		            <input type="hidden" name="id" value="${article.id}" />
-		
-		            <div>
-		                <label for="title">제목:</label>
-		                <input type="text" id="title" name="title" width="500px" value="${article.title}" required />
-		            </div>
-		
-		            <div>
-		                <label for="body">내용:</label>
-		                <textarea id="body" name="body" rows="10" cols="30" required>${article.body}</textarea>
-		            </div>
-		
-		            <button type="submit" onClick="../article/list">수정 완료</button>
+
+				<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
+				<tbody>
+				
+				<tr>
+					<th>제목 </th>
+					<td>
+					<input type="text" id="title" name="title" style="width: 400px" value="${article.title}" required />
+					</td>
+				</tr>
+				
+				<tr>
+					<th>내용</th>
+					<td>
+						<textarea id="body" name="body" rows="10" cols="30" required>${article.body}</textarea>
+					</td>
+				</tr>
+				</tbody>
+				</table>
+
+		            <button type="submit" >수정 완료</button>
 		        </form>
 		    </c:if>
 		
