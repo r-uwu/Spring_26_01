@@ -40,7 +40,7 @@ public class UsrArticleController {
 	
 	@RequestMapping("/usr/article/doModify")
 	@ResponseBody
-	public ResultData<Article> doModify(HttpServletRequest req, int id, String title, String body) {
+	public Object doModify(HttpServletRequest req, int id, String title, String body) {
 		
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -62,8 +62,9 @@ public class UsrArticleController {
 		articleService.modifyArticle(id, title, body);
 		article = articleService.getArticleById(id);
 
-		return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(),
-				"이번에 수정된 글 ", article);
+		//return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(),"이번에 수정된 글 ", article);
+				
+		return Ut.jsReplace("S-D","게시글이 수정되었습니다","usr/article/detail?"+id);
 	}
 	
 	@RequestMapping("/usr/article/modify")
@@ -77,7 +78,7 @@ public class UsrArticleController {
 	        return "redirect:/usr/article/list";
 	    }
 	    if (!article.isUserCanModify()) {
-	        return "redirect:/usr/article/detail?id=" + id;
+	    	return "redirect:/usr/article/detail?id=" + id;
 	    }
 
 	    model.addAttribute("article", article);
@@ -133,9 +134,14 @@ public class UsrArticleController {
 		return "/usr/article/list";
 	}
 	
-	@RequestMapping("/usr/article/doWhite")
+	@RequestMapping("/usr/article/write")
+	public String showLogin() {
+		return "/usr/article/write";
+	}
+	
+	@RequestMapping("/usr/article/doWrite")
 	@ResponseBody
-	public ResultData<Article> doWrite(HttpServletRequest req, String title, String body) {
+	public Object doWrite(HttpServletRequest req, String title, String body) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 
@@ -155,7 +161,8 @@ public class UsrArticleController {
 
 		Article article = articleService.getArticleById(id);
 
-		return ResultData.newData(doWriteRd, "이번에 쓰여진 글 / 새로 INSERT 된 article", article);
+		//return ResultData.newData(doWriteRd, "이번에 쓰여진 글 / 새로 INSERT 된 article", article);
+		return Ut.jsReplace("S-W","게시글 작성이 완료되었습니다","/usr/article/detail?id="+id);
 	}
 	
 }
