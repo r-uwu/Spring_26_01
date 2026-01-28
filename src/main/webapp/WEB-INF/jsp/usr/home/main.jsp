@@ -6,8 +6,15 @@
 <%@ include file="../common/head.jspf"%>
 
 <hr />
+<section style="display: flex">
+    <div style="flex: 0 0 200px;"> 
+        <%@ include file="../common/boardList.jspf" %>
+    </div>
+<div>
 <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic exercitationem quasi aliquid perferendis iure
 	ratione minima amet nostrum numquam repellat ullam eaque fugit magni! Id quibusdam nemo sed debitis ducimus.</div>
 <div>안녕</div>
+</div>
+</section>
 
 <%@ include file="../common/foot.jspf"%>

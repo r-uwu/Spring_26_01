@@ -20,7 +20,7 @@
 				<tbody>
 				
 				<tr>
-					<th>제목 </th>
+					<th>제목</th>
 					<td>
 					<input type="text" id="title" name="title" style="width: 400px" value="${article.title}" required />
 					</td>
@@ -32,6 +32,7 @@
 						<textarea id="body" name="body" rows="10" cols="30" required>${article.body}</textarea>
 					</td>
 				</tr>
+
 				</tbody>
 				</table>
 

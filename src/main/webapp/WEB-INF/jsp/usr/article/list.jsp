@@ -6,7 +6,10 @@
 <%@ include file="../common/head.jspf"%>
 
 <hr />
-
+<section style="display: flex">
+    <div style="flex: 0 0 200px;"> 
+        <%@ include file="../common/boardList.jspf" %>
+    </div>
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
 					<a href="../article/write">글쓰기</a>
@@ -33,6 +36,7 @@
 			</tbody>
 		</table>
 	</div>
+</section>
 </section>
 
 <%@ include file="../common/foot.jspf"%>
