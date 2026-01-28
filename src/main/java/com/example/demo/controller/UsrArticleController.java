@@ -22,6 +22,10 @@ public class UsrArticleController {
 	
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private Rq rq;
+
 
 
 	// 액션메서드
@@ -64,7 +68,7 @@ public class UsrArticleController {
 
 		//return ResultData.from(userCanModifyRd.getResultCode(), userCanModifyRd.getMsg(),"이번에 수정된 글 ", article);
 				
-		return Ut.jsReplace("S-D","게시글이 수정되었습니다","usr/article/detail?"+id);
+		return Ut.jsReplace("S-D","게시글이 수정되었습니다","/usr/article/detail?id="+id);
 	}
 	
 	@RequestMapping("/usr/article/modify")

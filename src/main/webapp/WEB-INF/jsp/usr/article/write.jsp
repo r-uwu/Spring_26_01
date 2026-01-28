@@ -11,7 +11,7 @@
 <section class="mt-8 text-xl px-4">
 	<div class="mx-auto">
 		    <c:if test="true">
-		        <form action="../article/doWrite" method="post">
+		        <form action="${pageContext.request.contextPath}/usr/article/doWrite" method="post">
 		            <!-- 수정할 게시글 id 숨김 -->
 		            <input type="hidden" name="id" value="${article.id}" />
 

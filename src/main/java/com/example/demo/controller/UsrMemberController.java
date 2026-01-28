@@ -23,6 +23,9 @@ public class UsrMemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private Rq rq;
+	
 	@RequestMapping("/usr/member/doLogout")
 	@ResponseBody
 	public String doLogout(HttpServletRequest req) {
@@ -36,7 +39,7 @@ public class UsrMemberController {
 
 		rq.logout();
 
-		return Ut.jsReplace("S-1", "로그아웃 되었습니다", "/");
+		return Ut.jsReplace("S-1", "로그아웃 되었습니다", "/usr/home/main");
 	}
 	
 	@RequestMapping("/usr/member/login")
@@ -76,8 +79,13 @@ public class UsrMemberController {
 		
 		return Ut.jsReplace("S-1", Ut.f("%s님 환영합니다", member.getNickname()), "/usr/home/main");
 	}
-
+	
 	@RequestMapping("/usr/member/join")
+	public String showJoin() {
+		return "/usr/member/join";
+	}
+
+	@RequestMapping("/usr/member/doJoin")
 	@ResponseBody
 	public ResultData<Member> doJoin(HttpServletRequest req, String loginId, String loginPw, String name,
 			String nickname, String cellphoneNum, String email) {

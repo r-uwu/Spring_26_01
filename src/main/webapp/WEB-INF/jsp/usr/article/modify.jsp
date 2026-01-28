@@ -12,7 +12,7 @@
 	<div class="mx-auto">
 		<c:if test="${not empty article}">
 		    <c:if test="${article.userCanModify}">
-		        <form action="../article/doModify" method="post">
+		        <form action="${pageContext.request.contextPath}/usr/article/doModify" method="post">
 		            <!-- 수정할 게시글 id 숨김 -->
 		            <input type="hidden" name="id" value="${article.id}" />
 
