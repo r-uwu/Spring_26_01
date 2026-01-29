@@ -136,13 +136,19 @@ public class UsrArticleController {
 //	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model, int boardId) {
+	public String showList(Model model, Integer boardId) {
 
+	    if (boardId == null) {
+	        boardId = 0;
+	    }
+		
 		Board board = boardService.getBoardById(boardId);
 		
 		List<Article> articles = articleService.getArticles();
+		
 		model.addAttribute("articles", articles);
 		model.addAttribute("board", board);
+	    model.addAttribute("boardId", boardId);  
 
 		return "/usr/article/list";
 	}

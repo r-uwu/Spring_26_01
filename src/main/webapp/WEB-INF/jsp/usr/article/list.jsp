@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<c:if test="${boardId != 0}">
 <c:set var="pageTitle" value="${board.name} LIST"></c:set>
+</c:if>
+
+<c:if test="${boardId eq 0}">
+<c:set var="pageTitle" value="전체글보기"></c:set>
+</c:if>
 
 <%@ include file="../common/head.jspf"%>
 
@@ -25,6 +31,16 @@
 			<tbody>
 				<c:forEach var="article" items="${articles }">
 				<c:if test="${article.boardId == board.id}">
+					<tr>
+						<td style="text-align: center;">${article.id }</td>
+						<td style="text-align: center;">${article.regDate.substring(0,10) }</td>
+						<td style="text-align: center;">
+							<a href="detail?id=${article.id } ">${article.title }</a>
+						</td>
+						<td style="text-align: center;">${article.extra__writer }</td>
+					</tr>
+				</c:if>
+				<c:if test="${boardId eq 0}">
 					<tr>
 						<td style="text-align: center;">${article.id }</td>
 						<td style="text-align: center;">${article.regDate.substring(0,10) }</td>
