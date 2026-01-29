@@ -18,16 +18,16 @@ public class UsrBoardController {
 	
     @Autowired
     private BoardService boardService;
-
-    @GetMapping("/list")
-    public String showBoardList(Model model) {
-        // 테스트용 게시판 데이터
-    	List<Board> boards = boardService.getBoards();
-
-        // JSP에 전달
-        model.addAttribute("boards", boards);
-
-        // boardList.jspf를 포함할 JSP
-        return "usr/home/main"; // main.jsp에서 boardList.jspf를 include
-    }
+//
+//    @GetMapping("/list")
+//    public String showBoardList(Model model) {
+//        // 테스트용 게시판 데이터
+//    	List<Board> boards = boardService.getBoards();
+//
+//        // JSP에 전달
+//        model.addAttribute("boards", boards);
+//
+//        // boardList.jspf를 포함할 JSP
+//        return "usr/home/main"; // main.jsp에서 boardList.jspf를 include
+//    }
 }

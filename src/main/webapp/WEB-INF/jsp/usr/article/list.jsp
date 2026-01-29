@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<c:set var="pageTitle" value="ARTICLE LIST"></c:set>
+<c:set var="pageTitle" value="${board.name} LIST"></c:set>
 
 <%@ include file="../common/head.jspf"%>
 
@@ -24,6 +24,7 @@
 			</thead>
 			<tbody>
 				<c:forEach var="article" items="${articles }">
+				<c:if test="${article.boardId == board.id}">
 					<tr>
 						<td style="text-align: center;">${article.id }</td>
 						<td style="text-align: center;">${article.regDate.substring(0,10) }</td>
@@ -32,6 +33,7 @@
 						</td>
 						<td style="text-align: center;">${article.extra__writer }</td>
 					</tr>
+					</c:if>
 				</c:forEach>
 			</tbody>
 		</table>

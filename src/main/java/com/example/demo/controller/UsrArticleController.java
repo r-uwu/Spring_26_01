@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import com.example.demo.service.BoardService;
 import com.example.demo.service.ArticleService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
+import com.example.demo.vo.Board;
 import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
@@ -22,6 +24,9 @@ public class UsrArticleController {
 	
 	@Autowired
 	private ArticleService articleService;
+	
+	@Autowired
+	private BoardService boardService;
 	
 	@Autowired
 	private Rq rq;
@@ -131,9 +136,13 @@ public class UsrArticleController {
 //	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model) {
+	public String showList(Model model, int boardId) {
+
+		Board board = boardService.getBoardById(boardId);
+		
 		List<Article> articles = articleService.getArticles();
 		model.addAttribute("articles", articles);
+		model.addAttribute("board", board);
 
 		return "/usr/article/list";
 	}

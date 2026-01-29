@@ -13,7 +13,7 @@
 			<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
 				<tbody>
 					<tr>
-						<th>아이디</th>
+						<th><label>아이디</label></th>
 						<td style="text-align: center;">
 							<input name="loginId" autocomplete="off" type="text" placeholder="아이디 입력" />
 						</td>
