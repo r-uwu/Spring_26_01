@@ -43,5 +43,14 @@ public interface ArticleRepository {
 	
 //	sql.append("LIMIT ?", itemsPerPage);
 //	sql.append("OFFSET ?", offset);
+	public List<Article> getArticlesinPage(int perPage, int offset);
+	
+	public int getArticlesCount(int boardId);
+
+	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset);
+
+	public int getArticlesCountAll();
+
+	public List<Article> getArticlesInPageAll(int perPage, int offset);
 
 }

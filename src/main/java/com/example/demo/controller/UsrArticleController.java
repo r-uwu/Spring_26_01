@@ -136,10 +136,14 @@ public class UsrArticleController {
 //	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model, Integer boardId) {
+	public String showList(Model model, Integer boardId, Integer page) {
 
 	    if (boardId == null) {
 	        boardId = 0;
+	    }
+	    
+	    if (page == null) {
+	        page = 1;
 	    }
 		
 		Board board = boardService.getBoardById(boardId);
@@ -150,8 +154,34 @@ public class UsrArticleController {
 	    model.addAttribute("boards", boards);
 		model.addAttribute("articles", articles);
 		model.addAttribute("board", board);
-	    model.addAttribute("boardId", boardId);  
-
+	    model.addAttribute("boardId", boardId);
+	    
+	    int perPage = 10;
+	    int offset =  (page-1) * perPage;
+	    
+	    int totalArticles = articleService.getArticlesCount(boardId);
+	    
+	    List<Article> currentPageArticles =
+	            articleService.getArticlesInPage(boardId, perPage, offset);
+	    
+	    if (boardId == 0) {
+	        totalArticles = articleService.getArticlesCountAll();
+	        currentPageArticles = articleService.getArticlesInPageAll(perPage, offset);
+	    } else {
+	        totalArticles = articleService.getArticlesCount(boardId);
+	        currentPageArticles = articleService.getArticlesInPage(boardId, perPage, offset);
+	    }
+	    
+	    int totalPages = (perPage > 0) ? (totalArticles / perPage) + (totalArticles % perPage > 0 ? 1 : 0) : 1;
+	    if (totalPages < 1) totalPages = 1;
+	    
+	    model.addAttribute("currentPageArticles", currentPageArticles);
+	    model.addAttribute("totalArticles", totalArticles);
+	    model.addAttribute("offset", offset);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("perPage", perPage);
+	    model.addAttribute("totalPages", totalPages);
+	        
 		return "/usr/article/list";
 	}
 	

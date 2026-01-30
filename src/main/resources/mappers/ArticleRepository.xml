@@ -60,12 +60,37 @@
 		ORDER BY A.id DESC
 	</select>
 	
-	<select id="getArticlesinPage"
+	<select id="getArticlesInPage" parameterType="map"
 		resultType="com.example.demo.vo.Article">
-		SELECT * FROM article AS A
+		SELECT A.*, M.nickname AS extra__writer
+		FROM article AS A
+		INNER JOIN `member` AS M
+		ON A.memberId = M.id
+		WHERE boardId = #{boardId}
 		ORDER BY id DESC
 		LIMIT #{perPage}
 		OFFSET #{offset}
 	</select>
+	
+	<select id="getArticlesCount" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*) FROM article
+		WHERE boardId = #{boardId}
+	</select>
+
+	<select id="getArticlesCountAll" resultType="int">
+	SELECT COUNT(*) FROM article
+	</select>
+	
+	<select id="getArticlesInPageAll" parameterType="map"
+	resultType="com.example.demo.vo.Article">
+	    SELECT A.*, M.name AS extra__writer
+    FROM article AS A
+    LEFT JOIN member AS M ON A.memberId = M.id
+    ORDER BY A.id DESC
+    LIMIT #{perPage}
+    OFFSET #{offset}
+	</select>
+	
 
 </mapper>

@@ -81,6 +81,28 @@ public class ArticleService {
 	public List<Article> getArticles() {
 		return articleRepository.getArticles();
 	}
+	
+	public List<Article> getArticlesinPage(int perPage, int offset){
+		return articleRepository.getArticlesinPage(perPage, offset);
+	}
+	
+	public int getArticlesCount(int boardId) {
+		return articleRepository.getArticlesCount(boardId);
+	}
+
+	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset) {
+		return articleRepository.getArticlesInPage(boardId, perPage, offset);
+	}
+
+	public int getArticlesCountAll() {
+		// TODO Auto-generated method stub
+		return articleRepository.getArticlesCountAll();
+	}
+
+	public List<Article> getArticlesInPageAll(int perPage, int offset) {
+		// TODO Auto-generated method stub
+		return articleRepository.getArticlesInPageAll(perPage, offset);
+	}
 
 
 	

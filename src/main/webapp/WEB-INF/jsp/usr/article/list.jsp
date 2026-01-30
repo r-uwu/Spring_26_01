@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<p>totalPages: ${totalPages}, currentPage: ${currentPage}, totalArticles: ${totalArticles}</p>
+
 <c:if test="${boardId != 0}">
     <c:set var="pageTitle" value="${board.name} LIST"></c:set>
 </c:if>
@@ -88,22 +90,84 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <c:forEach var="article" items="${articles}">
-                        <c:if test="${boardId == 0 || article.boardId == boardId}">
-                            <tr class="border-t hover:bg-gray-50">
-                                <td class="text-center py-2">${article.id}</td>
-                                <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
-                                <td class="text-center py-2">
-                                    <a href="detail?id=${article.id}" class="text-blue-600 hover:underline">
-                                        ${article.title}
-                                    </a>
-                                </td>
-                                <td class="text-center py-2">${article.extra__writer}</td>
-                            </tr>
-                        </c:if>
-                    </c:forEach>
+	                <c:choose>	
+	                
+	                	<c:when test="${boardId == 0}">
+							<c:forEach var="article" items="${currentPageArticles}">
+							    <tr class="border-t hover:bg-gray-50">
+							        <td class="text-center py-2">${article.id}</td>
+							        <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
+							        <td class="text-center py-2">
+							            <a href="detail?id=${article.id}" class="text-blue-600 hover:underline">
+							                ${article.title}
+							            </a>
+							        </td>
+							        <td class="text-center py-2">${article.extra__writer}</td>
+							    </tr>
+							</c:forEach>
+	                    </c:when>  
+	                                  
+	                	<c:otherwise>
+	                    	<c:forEach var="article" items="${currentPageArticles}">
+	                            <tr class="border-t hover:bg-gray-50">
+	                                <td class="text-center py-2">${article.id}</td>
+	                                <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
+	                                <td class="text-center py-2">
+	                                    <a href="detail?id=${article.id}" class="text-blue-600 hover:underline">
+	                                        ${article.title}
+	                                    </a>
+	                                </td>
+	                                <td class="text-center py-2">${article.extra__writer}</td>
+	                            </tr>
+	                    	</c:forEach>
+	                    </c:otherwise>
+
+                    </c:choose>
                 </tbody>
             </table>
+            
+<!-- 페이지네이션 -->
+<c:set var="pageRangeStart" value="${currentPage - 5}" />
+<c:set var="pageRangeEnd" value="${currentPage + 4}" />
+
+<c:if test="${pageRangeStart < 1}">
+    <c:set var="pageRangeStart" value="1" />
+</c:if>
+
+<c:if test="${pageRangeEnd > totalPages}">
+    <c:set var="pageRangeEnd" value="${totalPages}" />
+</c:if>
+
+<div class="mt-4 flex justify-center items-center gap-2">
+    <c:if test="${currentPage > 1}">
+        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage-1}"
+           class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+            &laquo; 이전
+        </a>
+    </c:if>
+
+    <c:forEach var="i" begin="${pageRangeStart}" end="${pageRangeEnd}">
+        <c:choose>
+            <c:when test="${i == currentPage}">
+                <span class="px-3 py-1 bg-blue-500 text-white rounded font-bold">${i}</span>
+            </c:when>
+            <c:otherwise>
+                <a href="/usr/article/list?boardId=${boardId}&page=${i}"
+                   class="px-3 py-1 bg-white text-gray-700 rounded hover:bg-gray-200">
+                    ${i}
+                </a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+
+    <c:if test="${currentPage < totalPages}">
+        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage+1}"
+           class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+            다음 &raquo;
+        </a>
+    </c:if>
+</div>
+			            
         </div>
     </main>
 </section>
