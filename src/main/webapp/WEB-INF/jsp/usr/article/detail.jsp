@@ -46,10 +46,10 @@
 
             <!-- 버튼 그룹 -->
             <div class="flex flex-wrap gap-3 mt-4">
-                <button type="button" onclick="history.back();" 
-                        class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
-                    뒤로가기
-                </button>
+			    <a href="${sessionScope.prevListPage != null ? sessionScope.prevListPage : '/usr/article/list'}" 
+			       class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
+			        뒤로가기
+			    </a>
 
                 <c:if test="${article.userCanModify}">
                     <a href="../article/modify?id=${article.id}" 

@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
+<!--
 <p>totalPages: ${totalPages}, currentPage: ${currentPage}, totalArticles: ${totalArticles}</p>
+-->
 
 <c:if test="${boardId != 0}">
     <c:set var="pageTitle" value="${board.name} LIST"></c:set>
@@ -83,10 +85,10 @@
             <table class="min-w-full border border-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-center py-2">ID</th>
-                        <th class="text-center py-2">등록일</th>
-                        <th class="text-center py-2">제목</th>
-                        <th class="text-center py-2">작성자</th>
+                        <th class="text-center py-2 w-12">ID</th>
+                        <th class="text-center py-2 w-32">등록일</th>
+                        <th class="text-left py-2 pl-20">제목</th>
+                        <th class="text-center py-2 w-32">작성자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,10 +99,11 @@
 							    <tr class="border-t hover:bg-gray-50">
 							        <td class="text-center py-2">${article.id}</td>
 							        <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
-							        <td class="text-center py-2">
-							            <a href="detail?id=${article.id}" class="text-blue-600 hover:underline">
-							                ${article.title}
-							            </a>
+							        <td class="text-left py-2 pl-10">
+										<a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
+										   class="text-blue-600 hover:underline">
+										    ${article.title}
+										</a>
 							        </td>
 							        <td class="text-center py-2">${article.extra__writer}</td>
 							    </tr>
@@ -112,10 +115,11 @@
 	                            <tr class="border-t hover:bg-gray-50">
 	                                <td class="text-center py-2">${article.id}</td>
 	                                <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
-	                                <td class="text-center py-2">
-	                                    <a href="detail?id=${article.id}" class="text-blue-600 hover:underline">
-	                                        ${article.title}
-	                                    </a>
+	                                <td class="text-left py-2 pl-10">
+										<a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
+										   class="text-blue-600 hover:underline">
+										    ${article.title}
+										</a>
 	                                </td>
 	                                <td class="text-center py-2">${article.extra__writer}</td>
 	                            </tr>

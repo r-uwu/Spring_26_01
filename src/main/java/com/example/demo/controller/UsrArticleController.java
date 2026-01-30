@@ -18,6 +18,7 @@ import com.example.demo.vo.ResultData;
 import com.example.demo.vo.Rq;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UsrArticleController {
@@ -136,15 +137,19 @@ public class UsrArticleController {
 //	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(Model model, Integer boardId, Integer page) {
+	public String showList(HttpSession session, Model model, Integer boardId, Integer page) {
 
 	    if (boardId == null) {
 	        boardId = 0;
 	    }
 	    
-	    if (page == null) {
+	    if (page == null || page <= 0) {
 	        page = 1;
 	    }
+	    
+	    // 세션에 현재 리스트 페이지 저장
+	    String prevListPage = "/usr/article/list?boardId=" + boardId + "&page=" + page;
+	    session.setAttribute("prevListPage", prevListPage);
 		
 		Board board = boardService.getBoardById(boardId);
 		
