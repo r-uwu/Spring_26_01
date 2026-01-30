@@ -59,5 +59,13 @@
 		ON A.memberId = M.id
 		ORDER BY A.id DESC
 	</select>
+	
+	<select id="getArticlesinPage"
+		resultType="com.example.demo.vo.Article">
+		SELECT * FROM article AS A
+		ORDER BY id DESC
+		LIMIT #{perPage}
+		OFFSET #{offset}
+	</select>
 
 </mapper>

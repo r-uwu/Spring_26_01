@@ -1,50 +1,60 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
-<html>
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>${pageTitle }</title>
+<title>${pageTitle}</title>
 <link rel="stylesheet" href="/resource/common.css" />
-<script src="/resource/common.js" defer="defer"></script>
-<!-- 제이쿼리 -->
+<script src="/resource/common.js" defer></script>
+
+<!-- jQuery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-<!-- 폰트어썸 -->
+<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<!-- 폰트어썸 FREE 아이콘 리스트 : https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free -->
 
-<!-- 테일윈드 -->
+<!-- Tailwind CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.1.4/tailwind.min.css">
-<!-- 테일윈드 치트시트 : https://nerdcave.com/tailwind-cheat-sheet -->
 </head>
-<body id="head">
-	<header>
-		<div class="flex h-20 mx-auto items-center text-3xl">
-			<a href="/usr/home/main">LOGO</a>
-			<div class="flex-grow"></div>
-			<ul class="flex">
-				<li class="hover:underline">
-					<a href="../home/main">HOME</a>
-				</li>
-				<li class="hover:underline">
-					<a href="../article/list">LIST</a>
-				</li>
-				<c:if test="${!rq.isLogined() }">
-					<li class="hover:underline">
-						<a href="../member/login">LOGIN</a>
-					</li>
-					<li class="hover:underline">
-						<a href="../member/join">JOIN</a>
-					</li>
-				</c:if>
-				<c:if test="${rq.isLogined() }">
-					<li class="hover:underline">
-						<a onclick="if(confirm('로그아웃 하시겠습니까?') == false) return false;" href="../member/doLogout">LOGOUT</a>
-					</li>
-				</c:if>
-			</ul>
-		</div>
-	</header>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-	<h1>${pageTitle }</h1>
+<!-- 헤더 -->
+<header class="bg-white shadow-md">
+    <div class="max-w-6xl mx-auto flex items-center h-20 px-4">
+        <!-- 로고 -->
+        <a href="/usr/home/main" class="text-2xl font-bold text-gray-800 hover:text-gray-600 transition">LOGO</a>
+
+        <div class="flex-grow"></div>
+
+        <!-- 네비게이션 -->
+        <ul class="flex space-x-4 text-lg">
+            <li>
+                <a href="../home/main" class="px-4 py-2 rounded hover:bg-gray-100 transition">HOME</a>
+            </li>
+            <li>
+                <a href="../article/list" class="px-4 py-2 rounded hover:bg-gray-100 transition">LIST</a>
+            </li>
+            <c:if test="${!rq.isLogined()}">
+                <li>
+                    <a href="../member/login" class="px-4 py-2 rounded hover:bg-gray-100 transition">LOGIN</a>
+                </li>
+                <li>
+                    <a href="../member/join" class="px-4 py-2 rounded hover:bg-gray-100 transition">JOIN</a>
+                </li>
+            </c:if>
+            <c:if test="${rq.isLogined()}">
+                <li>
+                    <a href="../member/doLogout" 
+                       onclick="return confirm('로그아웃 하시겠습니까?')"
+                       class="px-4 py-2 rounded hover:bg-gray-100 transition">LOGOUT</a>
+                </li>
+            </c:if>
+        </ul>
+    </div>
+</header>
+
+<!-- 페이지 타이틀 (작게) -->
+<div class="max-w-6xl mx-auto px-4 py-2">
+    <h1 class="text-gray-300 text-sm select-none">${pageTitle}</h1>
+</div>

@@ -145,7 +145,9 @@ public class UsrArticleController {
 		Board board = boardService.getBoardById(boardId);
 		
 		List<Article> articles = articleService.getArticles();
-		
+	    List<Board> boards = boardService.getBoards(); // 모든 게시판 가져오기
+	    
+	    model.addAttribute("boards", boards);
 		model.addAttribute("articles", articles);
 		model.addAttribute("board", board);
 	    model.addAttribute("boardId", boardId);  

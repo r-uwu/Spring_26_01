@@ -22,4 +22,14 @@ public class BoardService {
 	public Board getBoardById(int boardId) {
 		return boardRepository.getBoardById(boardId);
 	}
+
+//	public List<Board> getBoards(int boardId, String boardName, int boardOrder) {
+//
+//		return null;
+//	}
+
+	public List<Board> getBoards() {
+		// TODO Auto-generated method stub
+		return boardRepository.getBoards();
+	}
 }

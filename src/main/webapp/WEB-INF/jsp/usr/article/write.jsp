@@ -5,43 +5,44 @@
 
 <%@ include file="../common/head.jspf"%>
 
-<hr />
+<section class="mt-8 px-4">
+    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+        
+        <h2 class="text-2xl font-bold mb-6">${pageTitle}</h2>
+        
+        <!-- 작성 가능 여부 확인 -->
+        <c:if test="true">
+            <form action="${pageContext.request.contextPath}/usr/article/doWrite" method="post" class="space-y-6">
 
+                <!-- 제목 -->
+                <div class="flex flex-col">
+                    <label for="title" class="font-semibold mb-1">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목" required
+                           class="border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                </div>
 
-<section class="mt-8 text-xl px-4">
-	<div class="mx-auto">
-		    <c:if test="true">
-		        <form action="${pageContext.request.contextPath}/usr/article/doWrite" method="post">
-		            <!-- 수정할 게시글 id 숨김 -->
-		            <input type="hidden" name="id" value="${article.id}" />
+                <!-- 내용 -->
+                <div class="flex flex-col">
+                    <label for="body" class="font-semibold mb-1">내용</label>
+                    <textarea id="body" name="body" rows="10" placeholder="내용" required
+                              class="border border-gray-300 rounded px-3 py-2 resize-y focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                </div>
 
-				<table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse;">
-				<tbody>
-				
-				<tr>
-					<th>제목 </th>
-					<td>
-					<input type="text" id="title" name="title" style="width: 400px" placeholder="제목" required />
-					</td>
-				</tr>
-				
-				<tr>
-					<th>내용</th>
-					<td>
-						<textarea id="body" name="body" rows="10" cols="30" placeholder="내용" required></textarea>
-					</td>
-				</tr>
-				</tbody>
-				</table>
+                <div>
+                    <button type="submit" 
+                            class="bg-blue-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">
+                        작성하기
+                    </button>
+                </div>
 
-		            <button type="submit" >작성하기</button>
-		        </form>
-		    </c:if>
-		
-		    <c:if test="">
-		        <p>작성할 권한이 없습니다.</p>
-		    </c:if>
-	</div>
+            </form>
+        </c:if>
+
+        <c:if test="false">
+            <p class="text-red-600 font-semibold">작성할 권한이 없습니다.</p>
+        </c:if>
+
+    </div>
 </section>
 
 <%@ include file="../common/foot.jspf"%>

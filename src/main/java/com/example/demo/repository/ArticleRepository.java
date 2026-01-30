@@ -40,5 +40,8 @@ public interface ArticleRepository {
 
 	public Article getForPrintArticle(int id);
 
+	
+//	sql.append("LIMIT ?", itemsPerPage);
+//	sql.append("OFFSET ?", offset);
 
 }

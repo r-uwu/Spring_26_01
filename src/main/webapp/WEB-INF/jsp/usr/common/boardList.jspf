@@ -4,7 +4,8 @@
 
 <%-- boardSidebar.jspf --%>
 <div id="boardSidebar">
-  <h3>게시판</h3>
+  게시판
+  <hr/><hr/><hr/>
   <ul>
     <c:forEach var="board" items="${boards}">
       <li>
@@ -18,7 +19,6 @@
 
 
 <style>
-  /* 좌측 고정 사이드바 */
   #boardSidebar {
   posiiton: fixed;
     top: 0;
