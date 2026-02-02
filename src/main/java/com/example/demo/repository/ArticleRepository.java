@@ -45,12 +45,14 @@ public interface ArticleRepository {
 //	sql.append("OFFSET ?", offset);
 	public List<Article> getArticlesinPage(int perPage, int offset);
 	
-	public int getArticlesCount(int boardId);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword);
 
-	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset);
+	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset, String keyword);
 
 	public int getArticlesCountAll();
 
 	public List<Article> getArticlesInPageAll(int perPage, int offset);
+	
+	public List<Article> SearchKeywordByTitle(String keyword);
 
 }

@@ -12,10 +12,23 @@
     <c:set var="pageTitle" value="전체글보기"></c:set>
 </c:if>
 
+
 <%@ include file="../common/head.jspf"%>
 
-<section class="relative mt-8 px-4 max-w-6xl mx-auto md:flex md:gap-6">
+<section class="mt-8 px-4 max-w-6xl mx-auto md:gap-6">
+<form action="/usr/article/list" method="get" class="mb-4 flex gap-2 px-8">
+    <input type="hidden" name="boardId" value="${boardId}" />
+    <input type="text" name="keyword" value="${keyword}" 
+           placeholder="제목 검색" 
+           class="border border-gray-300 px-2 py-1 rounded flex-1">
+    <button type="submit" 
+            class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+        검색
+    </button>
+</form>
+</section>
 
+<section class="relative mt-8 px-4 max-w-6xl mx-auto md:flex md:gap-6">
 
     <!-- 사이드바 -->
 <aside
@@ -88,7 +101,7 @@
                         <th class="text-center py-2 w-12">ID</th>
                         <th class="text-center py-2 w-32">등록일</th>
                         <th class="text-left py-2 pl-20">제목</th>
-                        <th class="text-center py-2 w-32">작성자</th>
+                        <th class="text-center py-2 w-32 min-w-32">작성자</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -98,14 +111,14 @@
 							<c:forEach var="article" items="${currentPageArticles}">
 							    <tr class="border-t hover:bg-gray-50">
 							        <td class="text-center py-2">${article.id}</td>
-							        <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
-							        <td class="text-left py-2 pl-10">
-										<a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
-										   class="text-blue-600 hover:underline">
-										    ${article.title}
-										</a>
-							        </td>
-							        <td class="text-center py-2">${article.extra__writer}</td>
+							        <td class="text-center py-2 whitespace-nowrap px-4">${article.regDate.substring(0,10)}</td>
+									<td class="text-left py-2 overflow-hidden text-ellipsis whitespace-nowrap" style="max-width: 20ch;">
+									    <a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
+									       class="text-blue-600 hover:underline">
+									        ${article.title}
+									    </a>
+									</td>
+							        <td class="text-center py-2 whitespace-nowrap">${article.extra__writer}</td>
 							    </tr>
 							</c:forEach>
 	                    </c:when>  
@@ -114,14 +127,14 @@
 	                    	<c:forEach var="article" items="${currentPageArticles}">
 	                            <tr class="border-t hover:bg-gray-50">
 	                                <td class="text-center py-2">${article.id}</td>
-	                                <td class="text-center py-2">${article.regDate.substring(0,10)}</td>
-	                                <td class="text-left py-2 pl-10">
+	                                <td class="text-center py-2 whitespace-nowrap px-4">${article.regDate.substring(0,10)}</td>
+	                                <td class="text-left py-2 overflow-hidden text-ellipsis whitespace-nowrap" style="max-width: 20ch;">
 										<a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
 										   class="text-blue-600 hover:underline">
 										    ${article.title}
 										</a>
 	                                </td>
-	                                <td class="text-center py-2">${article.extra__writer}</td>
+	                                <td class="text-center py-2 whitespace-nowrap">${article.extra__writer}</td>
 	                            </tr>
 	                    	</c:forEach>
 	                    </c:otherwise>
@@ -144,7 +157,7 @@
 
 <div class="mt-4 flex justify-center items-center gap-2">
     <c:if test="${currentPage > 1}">
-        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage-1}"
+        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage-1}&keyword=${keyword}"
            class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
             &laquo; 이전
         </a>
@@ -156,7 +169,7 @@
                 <span class="px-3 py-1 bg-blue-500 text-white rounded font-bold">${i}</span>
             </c:when>
             <c:otherwise>
-                <a href="/usr/article/list?boardId=${boardId}&page=${i}"
+                <a href="/usr/article/list?boardId=${boardId}&page=${i}&keyword=${keyword}"
                    class="px-3 py-1 bg-white text-gray-700 rounded hover:bg-gray-200">
                     ${i}
                 </a>
@@ -165,7 +178,7 @@
     </c:forEach>
 
     <c:if test="${currentPage < totalPages}">
-        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage+1}"
+        <a href="/usr/article/list?boardId=${boardId}&page=${currentPage+1}&keyword=${keyword}"
            class="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
             다음 &raquo;
         </a>

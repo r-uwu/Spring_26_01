@@ -66,16 +66,33 @@
 		FROM article AS A
 		INNER JOIN `member` AS M
 		ON A.memberId = M.id
-		WHERE boardId = #{boardId}
-		ORDER BY id DESC
+		WHERE boardId = #{boardId} and
+		title LIKE CONCAT('%', #{keyword}, '%')
+		ORDER BY A.id DESC
 		LIMIT #{perPage}
-		OFFSET #{offset}
+		OFFSET #{offset}	
 	</select>
 	
 	<select id="getArticlesCount" parameterType="int"
 		resultType="int">
 		SELECT COUNT(*) FROM article
 		WHERE boardId = #{boardId}
+		<if test="searchKeyword != ''">
+			<choose>
+				<when test="searchKeywordTypeCode == 'title'">
+					AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<when test="searchKeywordTypeCode == 'body'">
+					AND `body` LIKE CONCAT('%', #{searchKeyword}, '%')
+				</when>
+				<otherwise>
+					AND title LIKE CONCAT('%', #{searchKeyword}, '%')
+					OR
+					`body` LIKE
+					CONCAT('%', #{searchKeyword}, '%')
+				</otherwise>
+			</choose>
+		</if>
 	</select>
 
 	<select id="getArticlesCountAll" resultType="int">
@@ -91,6 +108,13 @@
     LIMIT #{perPage}
     OFFSET #{offset}
 	</select>
+	
+<select id="SearchKeywordByTitle" parameterType="String"
+        resultType="com.example.demo.vo.Article">
+    SELECT *
+    FROM article
+    WHERE title LIKE CONCAT('%', #{keyword}, '%')
+</select>
 	
 
 </mapper>

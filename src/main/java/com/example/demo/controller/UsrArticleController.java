@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -137,7 +139,7 @@ public class UsrArticleController {
 //	}
 	
 	@RequestMapping("/usr/article/list")
-	public String showList(HttpSession session, Model model, Integer boardId, Integer page) {
+	public String showList(HttpSession session, Model model, Integer boardId, String searchKeywordTypeCode, Integer page, String keyword ) {
 
 	    if (boardId == null) {
 	        boardId = 0;
@@ -146,6 +148,14 @@ public class UsrArticleController {
 	    if (page == null || page <= 0) {
 	        page = 1;
 	    }
+	    
+	    if(keyword == null) keyword = "";
+	    
+	    if(searchKeywordTypeCode == null)
+	    {
+	    	searchKeywordTypeCode="title";
+	    }
+	    
 	    
 	    // 세션에 현재 리스트 페이지 저장
 	    String prevListPage = "/usr/article/list?boardId=" + boardId + "&page=" + page;
@@ -164,17 +174,17 @@ public class UsrArticleController {
 	    int perPage = 10;
 	    int offset =  (page-1) * perPage;
 	    
-	    int totalArticles = articleService.getArticlesCount(boardId);
+	    int totalArticles = articleService.getArticlesCount(boardId, searchKeywordTypeCode, keyword);
 	    
 	    List<Article> currentPageArticles =
-	            articleService.getArticlesInPage(boardId, perPage, offset);
+	            articleService.getArticlesInPage(boardId, perPage, offset, keyword);
 	    
 	    if (boardId == 0) {
 	        totalArticles = articleService.getArticlesCountAll();
 	        currentPageArticles = articleService.getArticlesInPageAll(perPage, offset);
 	    } else {
-	        totalArticles = articleService.getArticlesCount(boardId);
-	        currentPageArticles = articleService.getArticlesInPage(boardId, perPage, offset);
+	        totalArticles = articleService.getArticlesCount(boardId, searchKeywordTypeCode, keyword);
+	        currentPageArticles = articleService.getArticlesInPage(boardId, perPage, offset, keyword);
 	    }
 	    
 	    int totalPages = (perPage > 0) ? (totalArticles / perPage) + (totalArticles % perPage > 0 ? 1 : 0) : 1;
@@ -186,7 +196,8 @@ public class UsrArticleController {
 	    model.addAttribute("currentPage", page);
 	    model.addAttribute("perPage", perPage);
 	    model.addAttribute("totalPages", totalPages);
-	        
+	    model.addAttribute("keyword", keyword);
+	    
 		return "/usr/article/list";
 	}
 	

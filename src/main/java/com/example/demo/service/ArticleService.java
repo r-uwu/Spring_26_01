@@ -86,12 +86,12 @@ public class ArticleService {
 		return articleRepository.getArticlesinPage(perPage, offset);
 	}
 	
-	public int getArticlesCount(int boardId) {
-		return articleRepository.getArticlesCount(boardId);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
+		return articleRepository.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
 	}
 
-	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset) {
-		return articleRepository.getArticlesInPage(boardId, perPage, offset);
+	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset, String keyword) {
+		return articleRepository.getArticlesInPage(boardId, perPage, offset, keyword);
 	}
 
 	public int getArticlesCountAll() {
@@ -102,6 +102,10 @@ public class ArticleService {
 	public List<Article> getArticlesInPageAll(int perPage, int offset) {
 		// TODO Auto-generated method stub
 		return articleRepository.getArticlesInPageAll(perPage, offset);
+	}
+	
+	public List<Article> SearchKeywordByTitle(String keyword){
+		return articleRepository.SearchKeywordByTitle(keyword);
 	}
 
 
