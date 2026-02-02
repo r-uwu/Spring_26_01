@@ -86,27 +86,18 @@ public class ArticleService {
 		return articleRepository.getArticlesinPage(perPage, offset);
 	}
 	
-	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String searchKeyword) {
-		return articleRepository.getArticlesCount(boardId, searchKeywordTypeCode, searchKeyword);
+	public int getArticlesCount(int boardId, String searchKeywordTypeCode, String keyword) {
+		return articleRepository.getArticlesCount(boardId, searchKeywordTypeCode, keyword);
 	}
 
-	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset, String keyword) {
-		return articleRepository.getArticlesInPage(boardId, perPage, offset, keyword);
+	public List<Article> getArticlesInPage(Integer boardId, int perPage, int offset, String keyword, String searchKeywordTypeCode) {
+		return articleRepository.getArticlesInPage(boardId, perPage, offset, keyword, searchKeywordTypeCode);
 	}
 
-	public int getArticlesCountAll() {
-		// TODO Auto-generated method stub
-		return articleRepository.getArticlesCountAll();
-	}
-
-	public List<Article> getArticlesInPageAll(int perPage, int offset) {
-		// TODO Auto-generated method stub
-		return articleRepository.getArticlesInPageAll(perPage, offset);
-	}
 	
-	public List<Article> SearchKeywordByTitle(String keyword){
-		return articleRepository.SearchKeywordByTitle(keyword);
-	}
+//	public List<Article> SearchKeywordByTitle(String keyword){
+//		return articleRepository.SearchKeywordByTitle(keyword);
+//	}
 
 
 	

@@ -145,12 +145,23 @@ public class UsrArticleController {
 	        boardId = 0;
 	    }
 	    
+	    
 	    if (page == null || page <= 0) {
 	        page = 1;
 	    }
 	    
+	    if (keyword != null) {
+	        session.setAttribute("keyword", keyword);
+	    } else {
+	        keyword = (String) session.getAttribute("keyword");
+	    }
 	    if(keyword == null) keyword = "";
 	    
+	    if (searchKeywordTypeCode != null) {
+	        session.setAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
+	    } else {
+	        searchKeywordTypeCode = (String) session.getAttribute("searchKeywordTypeCode");
+	    }
 	    if(searchKeywordTypeCode == null)
 	    {
 	    	searchKeywordTypeCode="title";
@@ -177,16 +188,9 @@ public class UsrArticleController {
 	    int totalArticles = articleService.getArticlesCount(boardId, searchKeywordTypeCode, keyword);
 	    
 	    List<Article> currentPageArticles =
-	            articleService.getArticlesInPage(boardId, perPage, offset, keyword);
+	            articleService.getArticlesInPage(boardId, perPage, offset, keyword, searchKeywordTypeCode);
 	    
-	    if (boardId == 0) {
-	        totalArticles = articleService.getArticlesCountAll();
-	        currentPageArticles = articleService.getArticlesInPageAll(perPage, offset);
-	    } else {
-	        totalArticles = articleService.getArticlesCount(boardId, searchKeywordTypeCode, keyword);
-	        currentPageArticles = articleService.getArticlesInPage(boardId, perPage, offset, keyword);
-	    }
-	    
+   
 	    int totalPages = (perPage > 0) ? (totalArticles / perPage) + (totalArticles % perPage > 0 ? 1 : 0) : 1;
 	    if (totalPages < 1) totalPages = 1;
 	    
@@ -197,6 +201,7 @@ public class UsrArticleController {
 	    model.addAttribute("perPage", perPage);
 	    model.addAttribute("totalPages", totalPages);
 	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("searchKeywordTypeCode", searchKeywordTypeCode);
 	    
 		return "/usr/article/list";
 	}

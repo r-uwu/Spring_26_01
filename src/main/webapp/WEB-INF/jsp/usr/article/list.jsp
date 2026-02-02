@@ -15,18 +15,6 @@
 
 <%@ include file="../common/head.jspf"%>
 
-<section class="mt-8 px-4 max-w-6xl mx-auto md:gap-6">
-<form action="/usr/article/list" method="get" class="mb-4 flex gap-2 px-8">
-    <input type="hidden" name="boardId" value="${boardId}" />
-    <input type="text" name="keyword" value="${keyword}" 
-           placeholder="제목 검색" 
-           class="border border-gray-300 px-2 py-1 rounded flex-1">
-    <button type="submit" 
-            class="px-4 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
-        검색
-    </button>
-</form>
-</section>
 
 <section class="relative mt-8 px-4 max-w-6xl mx-auto md:flex md:gap-6">
 
@@ -184,6 +172,40 @@
         </a>
     </c:if>
 </div>
+
+<!-- 검색 바 -->
+<section class="mt-6 px-4 max-w-6xl mx-auto px-8">
+    <form action="/usr/article/list" method="get"
+          class="flex items-center gap-2">
+
+        <input type="hidden" name="boardId" value="${boardId}" />
+
+        <select name="searchKeywordTypeCode"
+                class="border border-gray-300 px-2 py-2 rounded text-sm
+                       focus:outline-none focus:ring-1 focus:ring-blue-400">
+            <option value="title"
+                ${searchKeywordTypeCode == 'title' ? 'selected' : ''}>제목</option>
+            <option value="body"
+                ${searchKeywordTypeCode == 'body' ? 'selected' : ''}>내용</option>
+            <option value="titleAndBody"
+                ${searchKeywordTypeCode == 'titleAndBody' ? 'selected' : ''}>제목+내용</option>
+        </select>
+
+        <input type="text"
+               name="keyword"
+               value="${keyword}"
+               placeholder="검색"
+               class="flex-1 border border-gray-300 px-3 py-2 rounded text-sm
+                      focus:outline-none focus:ring-1 focus:ring-blue-400" />
+
+        <button type="submit"
+                class="px-4 py-2 bg-gray-800 text-white rounded text-sm
+                       hover:bg-gray-900 transition whitespace-nowrap">
+            검색
+        </button>
+    </form>
+</section>
+
 			            
         </div>
     </main>
