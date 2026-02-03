@@ -98,6 +98,10 @@ public class ArticleService {
 //	public List<Article> SearchKeywordByTitle(String keyword){
 //		return articleRepository.SearchKeywordByTitle(keyword);
 //	}
+	
+	public Article increaseHit(int id) {
+		return articleRepository.increaseHit(id);
+	}
 
 
 	

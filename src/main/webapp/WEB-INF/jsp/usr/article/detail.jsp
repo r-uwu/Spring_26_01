@@ -36,6 +36,8 @@
                     <tr>
                         <th class="py-2 text-gray-500">Title</th>
                         <td class="py-2 text-gray-800 font-medium">${article.title}</td>
+                        <th class="py-2 text-gray-500">Hit</th>
+                        <td class="py-2 text-gray-800">${article.hit}</td>
                     </tr>
                     <tr>
                         <th class="py-2 text-gray-500 align-top">Body</th>

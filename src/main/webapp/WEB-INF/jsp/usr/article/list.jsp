@@ -31,7 +31,7 @@
     bottom-0
     left-0
 
-    w-56
+    w-48
     bg-gray-100 md:bg-transparent
     z-40
     px-4 pt-6
@@ -87,6 +87,7 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="text-center py-2 w-12">ID</th>
+                        <th class="text-center py-2 w-12">조회수</th>
                         <th class="text-center py-2 w-32">등록일</th>
                         <th class="text-left py-2 pl-20">제목</th>
                         <th class="text-center py-2 w-32 min-w-32">작성자</th>
@@ -99,6 +100,7 @@
 							<c:forEach var="article" items="${currentPageArticles}">
 							    <tr class="border-t hover:bg-gray-50">
 							        <td class="text-center py-2">${article.id}</td>
+							        <td class="text-center py-2">${article.hit}</td>
 							        <td class="text-center py-2 whitespace-nowrap px-4">${article.regDate.substring(0,10)}</td>
 									<td class="text-left py-2 overflow-hidden text-ellipsis whitespace-nowrap" style="max-width: 20ch;">
 									    <a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
@@ -115,6 +117,7 @@
 	                    	<c:forEach var="article" items="${currentPageArticles}">
 	                            <tr class="border-t hover:bg-gray-50">
 	                                <td class="text-center py-2">${article.id}</td>
+	                                <td class="text-center py-2">${article.hit}</td>
 	                                <td class="text-center py-2 whitespace-nowrap px-4">${article.regDate.substring(0,10)}</td>
 	                                <td class="text-left py-2 overflow-hidden text-ellipsis whitespace-nowrap" style="max-width: 20ch;">
 										<a href="/usr/article/detail?id=${article.id}&boardId=${boardId}&page=${currentPage}"
@@ -189,6 +192,8 @@
                 ${searchKeywordTypeCode == 'body' ? 'selected' : ''}>내용</option>
             <option value="titleAndBody"
                 ${searchKeywordTypeCode == 'titleAndBody' ? 'selected' : ''}>제목+내용</option>
+            <option value="writer"
+                ${searchKeywordTypeCode == 'writer' ? 'selected' : ''}>작성자</option>
         </select>
 
         <input type="text"

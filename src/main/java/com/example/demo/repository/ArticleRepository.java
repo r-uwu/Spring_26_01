@@ -51,5 +51,7 @@ public interface ArticleRepository {
 
 	
 	//public List<Article> SearchKeywordByTitle(String keyword);
+	
+	public Article increaseHit(int id);
 
 }

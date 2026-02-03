@@ -96,6 +96,9 @@
 				<when test="searchKeywordTypeCode == 'body'">
 					AND `body` LIKE CONCAT('%', #{keyword}, '%')
 				</when>
+				<when test="searchKeywordTypeCode == 'writer'">
+					AND M.nickname LIKE CONCAT('%', #{keyword}, '%')
+				</when>
 				<otherwise>
 				    AND (
 				        A.title LIKE CONCAT('%', #{keyword}, '%')
@@ -139,6 +142,12 @@
 	            </choose>
 	        </if>
     </where>
+	</select>
+	
+	<select id="increaseHit" parameterType="int">
+	UPDATE article
+	SET hit = hit+1
+	WHERE id=#{id}
 	</select>
 	
 </mapper>
