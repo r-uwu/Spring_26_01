@@ -5,6 +5,37 @@
 
 <%@ include file="../common/head.jspf"%>
 
+<script>
+	const params = {};
+	params.id = parseInt('${param.id}');
+</script>
+
+<script>
+	function ArticleDetail__doIncreaseHitCount() {
+		console.log('ajax call start, id =', params.id);
+		
+		$.get('../article/doIncreaseHitCountRd', {
+			id : params.id,
+			ajaxMode : 'Y'
+		}, function(data) {
+			console.log('ajax success', data);
+			
+			$('.article-detail__hit-count').html(data.data1);
+			console.log(data);
+			console.log('data.msg : ' + data.msg);
+			console.log('data.data1 : ' + data.data1);
+		}, 'json')
+		.fail(function(jqXHR, textStatus, errorThrown) {
+	        console.error('ajax failed', textStatus, errorThrown); // <- 에러 체크
+	    });
+	}
+
+	$(function() {
+		ArticleDetail__doIncreaseHitCount();
+		 		//setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
+	})
+</script>
+
 <section class="mt-8 px-4">
     <div class="max-w-4xl mx-auto bg-white border border-gray-200 rounded-xl overflow-hidden">
 
@@ -37,7 +68,10 @@
                         <th class="py-2 text-gray-500">Title</th>
                         <td class="py-2 text-gray-800 font-medium">${article.title}</td>
                         <th class="py-2 text-gray-500">Hit</th>
-                        <td class="py-2 text-gray-800">${article.hit}</td>
+                        <td style="text-align: center;">
+							<span class="article-detail__hit-count">${article.hit}</span>
+						</td>
+                        <script></script>
                     </tr>
                     <tr>
                         <th class="py-2 text-gray-500 align-top">Body</th>

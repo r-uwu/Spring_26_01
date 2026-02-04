@@ -99,10 +99,21 @@ public class ArticleService {
 //		return articleRepository.SearchKeywordByTitle(keyword);
 //	}
 	
-	public Article increaseHit(int id) {
-		return articleRepository.increaseHit(id);
+	public ResultData increaseHitCount(int id) {
+
+		int affectedRow = articleRepository.increaseHitCount(id);
+
+//		System.err.println("affectedRow : " + affectedRow);
+
+		if (affectedRow == 0) {
+			return ResultData.from("F-1", "해당 게시글은 없음", "id", id);
+		}
+
+		return ResultData.from("S-1", "조회수 증가", "id", id);
 	}
 
+	public Object getArticleHitCount(int id) {
+		return articleRepository.getArticleHitCount(id);
+	}
 
-	
 }

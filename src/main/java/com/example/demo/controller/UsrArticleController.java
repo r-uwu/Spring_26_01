@@ -34,24 +34,50 @@ public class UsrArticleController {
 	@Autowired
 	private Rq rq;
 
-
-
 	// 액션메서드
+	
+	@RequestMapping("/usr/article/doIncreaseHitCount")
+	@ResponseBody
+	public ResultData doIncreaseHitCount(HttpServletRequest req, int id) {
+
+		Rq rq = (Rq) req.getAttribute("rq");
+		
+		
+		ResultData increaseHitCountRd = articleService.increaseHitCount(id); 
+		
+		if(increaseHitCountRd.isFail())
+		{
+			return increaseHitCountRd;
+		}
+
+		return ResultData.newData(increaseHitCountRd, "hitCount", articleService.increaseHitCount(id));
+	}
+	
+	
 	@RequestMapping("/usr/article/detail")
 	public String showDetail(HttpServletRequest req, Model model, int id) {
 
 		Rq rq = (Rq) req.getAttribute("rq");
 		
-		articleService.increaseHit(id); 
-		
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
-		
-
 		model.addAttribute("article", article);
-
 		
 		return "usr/article/detail";
+		
+	}
 	
+	@RequestMapping("/usr/article/doIncreaseHitCountRd")
+	@ResponseBody
+	public ResultData doIncreaseHitCount(int id) {
+		
+		ResultData increaseHitCountRd = articleService.increaseHitCount(id);
+		
+		if (increaseHitCountRd.isFail()) {
+			return increaseHitCountRd;
+		}
+		
+		return ResultData.newData(increaseHitCountRd, "hit", articleService.getArticleHitCount(id));
+
 	}
 	
 	@RequestMapping("/usr/article/doModify")
