@@ -26,7 +26,7 @@
 			console.log('data.data1 : ' + data.data1);
 		}, 'json')
 		.fail(function(jqXHR, textStatus, errorThrown) {
-	        console.error('ajax failed', textStatus, errorThrown); // <- 에러 체크
+	        console.error('ajax failed', textStatus, errorThrown);
 	    });
 	}
 
@@ -34,6 +34,28 @@
 		ArticleDetail__doIncreaseHitCount();
 		 		//setTimeout(ArticleDetail__doIncreaseHitCount, 2000);
 	})
+</script>
+
+<script>
+async function doReaction(id, type) {
+    console.log(type + " 시도 게시물 번호:", id);
+
+    try {
+        const url = '/usr/article/do' + type + '?articleId=' + id;
+        
+        const response = await fetch(url);
+        const rd = await response.json();
+
+        alert(rd.msg || rd.message);
+        
+        if (rd.success) {
+            location.reload();
+        }
+    } catch (e) {
+        console.error("통신 에러:", e);
+        alert("에러가 발생했습니다.");
+    }
+}
 </script>
 
 <section class="mt-8 px-4">
@@ -82,6 +104,18 @@
 
             <!-- 버튼 그룹 -->
             <div class="flex flex-wrap gap-3 mt-4">
+            <button onClick="doReaction(${article.id},'Like')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-blue-300 hover:text-white transition">
+            좋아요 <span id="like-count">${article.likeCount}</span></button>
+            <button onClick="doReaction(${article.id},'Dislike')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-white hover:text-gray-500 transition">
+            싫어요 <span id="dislike-count">${article.dislikeCount}</span></button>
+            </div>
+            
+            
+            
+            
+            
+               
+            <div class="flex flex-wrap gap-3 mt-4">
 			    <a href="${sessionScope.prevListPage != null ? sessionScope.prevListPage : '/usr/article/list'}" 
 			       class="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition">
 			        뒤로가기
@@ -98,6 +132,8 @@
                     </a>
                 </c:if>
             </div>
+            
+
         </div>
     </div>
 </section>

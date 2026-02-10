@@ -53,7 +53,11 @@ public interface ArticleRepository {
 	//public List<Article> SearchKeywordByTitle(String keyword);
 	
 	public int increaseHitCount(int id);
+	
+	public int getArticleHitCount(int id);
 
-	public Object getArticleHitCount(int id);
+	public void CheckMemberLikeCount(int memberId, int articleId);
+	
+	public void increaseArticleLikeCount(int articleId);
 
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.example.demo.repository.ReactionRepository">
+	<select id="getReactionPoint" resultType="Integer">
+	    SELECT reactionPoint
+	    FROM reaction
+	    WHERE memberId = #{memberId}
+	    AND articleId = #{articleId}
+	</select>
+
+	<select id="getReactionCount" resultType="int">
+	    SELECT COUNT(*)
+	    FROM reaction
+	    WHERE memberId = #{memberId}
+	    AND articleId = #{articleId}
+	</select>
+	
+	<insert id="insertLikeReaction">
+	    INSERT INTO reaction (memberId, articleId, reactionPoint)
+	    VALUES (#{memberId}, #{articleId}, 1)
+	</insert>
+	
+	<delete id="deleteReaction">
+	    DELETE FROM reaction
+	    WHERE memberId = #{memberId}
+	    AND articleId = #{articleId}
+	</delete>
+	
+	<update id="increaseArticleLikeCount">
+	    UPDATE article
+	    SET likeCount = likeCount + 1
+	    WHERE id = #{articleId}
+	</update>
+	
+	<update id="decreaseArticleLikeCount">
+	    UPDATE article
+	    SET likeCount = likeCount - 1
+	    WHERE id = #{articleId}
+	</update>
+	
+	
+	
+	
+	
+	
+	<select id="getDislikeCount" resultType="int">
+ 	   SELECT COUNT(*) FROM reaction 
+ 	   WHERE memberId = #{memberId} AND articleId = #{articleId} AND reactionPoint = -1
+	</select>
+	
+	<insert id="insertDislikeReaction">
+	    INSERT INTO reaction (memberId, articleId, reactionPoint)
+	    VALUES (#{memberId}, #{articleId}, -1)
+	</insert>
+	
+	<update id="increaseArticleDislikeCount">
+	    UPDATE article SET dislikeCount = dislikeCount + 1 WHERE id = #{articleId}
+	</update>
+	
+	<update id="decreaseArticleDislikeCount">
+	    UPDATE article SET dislikeCount = dislikeCount - 1 WHERE id = #{articleId}
+	</update>
+</mapper>

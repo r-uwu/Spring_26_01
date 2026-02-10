@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.example.demo.service.BoardService;
+import com.example.demo.service.ReactionService;
 import com.example.demo.service.ArticleService;
 import com.example.demo.util.Ut;
 import com.example.demo.vo.Article;
@@ -30,6 +31,9 @@ public class UsrArticleController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private ReactionService reactionService;
 	
 	@Autowired
 	private Rq rq;
@@ -266,6 +270,44 @@ public class UsrArticleController {
 		//return ResultData.newData(doWriteRd, "이번에 쓰여진 글 / 새로 INSERT 된 article", article);
 		return Ut.jsReplace("S-W","게시글 작성이 완료되었습니다","/usr/article/detail?id="+id);
 	}
+	
+	@RequestMapping("/usr/article/doLike")
+	@ResponseBody
+	public ResultData doLike(HttpSession session, int articleId)
+	{
+		// 1. 로그인 체크 (괄호와 return 위치를 바로잡았습니다)
+	    Integer loginedMemberId = (Integer) session.getAttribute("loginedMemberId");
+	    if (loginedMemberId == null) { 
+	        return ResultData.from("F-1", "로그인을 먼저 해 주세요"); 
+	    }
+	
+		Article article = articleService.getArticleById(articleId);
+	    if (article == null) {
+	        return ResultData.from("F-2", articleId + "번 게시글은 존재하지 않습니다.");
+	    }
+		
+		ResultData rd = reactionService.toggleLike(loginedMemberId, articleId);
+		return rd;
+	}
+	
+	@RequestMapping("/usr/article/doDislike")
+	@ResponseBody
+	public ResultData doDislike(HttpSession session, int articleId)
+	{
+	    Integer loginedMemberId = (Integer) session.getAttribute("loginedMemberId");
+	    if (loginedMemberId == null) { 
+	        return ResultData.from("F-1", "로그인을 먼저 해 주세요"); 
+	    }
+	
+		Article article = articleService.getArticleById(articleId);
+	    if (article == null) {
+	        return ResultData.from("F-2", articleId + "번 게시글은 존재하지 않습니다.");
+	    }
+		
+		ResultData rd = reactionService.toggleDislike(loginedMemberId, articleId);
+		return rd;
+	}
+	
 	
 }
 

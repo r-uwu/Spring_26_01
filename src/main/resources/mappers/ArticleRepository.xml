@@ -156,6 +156,35 @@
 	WHERE id = #{id}
 	</select>
 	
+	<insert id="CheckMemberLikeCount" parameterType="map">
+	INSERT INTO reaction (memberId, articleId, reactionPoint)
+	VALUES (#{memberId}, #{articleId}, 1);
+	</insert>
+	
+	<update id="increaseArticleLikeCount" parameterType="int">
+	UPDATE article
+	SET likeCount = likeCount + 1
+	WHERE id = #{articleId};
+	</update>
+	
+
+	<insert id="CheckMemberDislikeCount" parameterType="map">
+	INSERT INTO reaction (memberId, articleId, reactionPoint)
+	VALUES (#{memberId}, #{articleId}, -1);
+	</insert>
+	
+	<update id="increaseArticleDislikeCount" parameterType="int">
+	UPDATE article
+	SET dislikeCount = dislikeCount + 1
+	WHERE id = #{articleId};
+	</update>
+	
+	
+	<delete id="deleteReaction">
+    DELETE FROM reaction
+    WHERE memberId = #{memberId}
+    AND articleId = #{articleId}
+    </delete>
 	
 	
 </mapper>

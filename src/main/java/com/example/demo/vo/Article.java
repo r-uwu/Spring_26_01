@@ -26,6 +26,8 @@ public class Article {
 	private String body;
 	private int boardId;
 	private int hit;
+	private int likeCount;
+	private int dislikeCount;
 	
 	private String extra__writer;
 	private boolean userCanModify;
